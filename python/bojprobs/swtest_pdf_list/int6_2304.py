@@ -53,14 +53,75 @@
 
 # print(area)
 
-N = int(input())
-lfts = [0] * N
-heights = [0] * N
-for i in range(N):
-    lfts[i], heights[i] = map(int, input().split())
-highest_idx = heights.index(max(heights))
+# N = int(input())
+# area = 0
+# temp = []
+
+# for i in range(N):
+#     inp = tuple(map(int, input().split()))
+#     temp.append(inp)
+# temp.sort(key=lambda x:x[0])    
+# # print(temp)
+# loc = [a[0] for a in temp]
+# h = [b[1] for b in temp]
+# # print(loc, h)
+# highest = max(h)
+# loc2 = loc[::-1]
+# h2 = h[::-1]
+
+# i = 0
+# temploc = loc[0]
+# temph = h[0]
+# while i < h.index(highest):
+#     if i == 0:
+#         pass
+#     elif h[i] > h[i-1]:
+#         area += temph * (loc[i] - temploc)
+#         temploc = loc[i]
+#         temph = h[i]
+#     i += 1
+
+# j = 0
+# temploc2 = loc2[0]
+# temph2 = h2[0]
+# while j < h2.index(highest):
+#     if j == 0:
+#         pass
+#     elif h2[j] > h2[j-1]:
+#         area += temph2 * (temploc2 - loc[j])
+#         temploc2 = loc2[j]
+#         temph2 = h2[j]
+#     j += 1
+
+# if h.count(highest) > 1:
+#     area += (loc2[h2.index(highest)] - loc[h.index(highest)] + 1) * highest
+# else:
+#     area += highest
+
+# print(area)
 
 
+# N = int(input())
+# whole = []
+# for _ in range(N):
+#     temp = tuple(map(int, input().split()))
+#     whole.append(temp)
+# whole.sort(key=lambda x: x[0])
+# base = whole[-1][0] - whole[0][0] + 1
+# h = [i[1] for i in whole]
+# l_lst = [i[0] for i in whole]
+# r_lst = l_lst[::-1]
+# maxh = max(h)
 
+# i = 0
+# temph = min(h)
+# while temph < maxh:
 
-
+# N = int(input())
+# whole = []
+# for _ in range(N):
+#     temp = tuple(map(int, input().split()))
+#     whole.append(temp)
+# whole.sort(key=lambda x:x[0])
+# h = [i[1] for i in whole]
+# std = h.index(max(h))
