@@ -29,3 +29,10 @@
 * #sum(tempa[i:i+K])를 없애보았다. (k번 만큼 없애보려고) --> 성공!
 
   \# 계산을 최소화하면 시간은 줄어든다.
+
+
+
+## 파이참에서 할 때 환경설정부터 하기 (keyboard shortcut)
+
+- redo
+- python console
