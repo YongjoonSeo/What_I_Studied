@@ -125,3 +125,68 @@
 # whole.sort(key=lambda x:x[0])
 # h = [i[1] for i in whole]
 # std = h.index(max(h))
+
+def Loc(lst, k):
+    return lst[k][0]
+
+N = int(input())
+raw = []
+area = 0
+
+for i in range(N):
+    temp = tuple(map(int, input().split()))
+    raw.append(temp)
+raw.sort(key=lambda x: x[0])
+
+h = [i[1] for i in raw]
+
+maxh = max(h)
+max_idx = h.index(maxh)
+# max_loc = Loc(raw, max_idx)
+
+tempidx = 0
+for i in range(1, max_idx + 1):
+    if h[tempidx] <= h[i]: ## 바꾼부분 ('='추가)
+        area += (Loc(raw, i) - Loc(raw, tempidx)) * h[tempidx]
+        tempidx = i
+
+if h.count(maxh) >= 2:
+    while tempidx != len(h) and h[tempidx] == maxh:
+        tempidx += 1
+    rmax_idx = tempidx -1
+    area += (Loc(raw, rmax_idx) - Loc(raw, max_idx) + 1) * maxh
+else:
+    rmax_idx = tempidx
+    area += maxh
+
+tempidx = -1
+for j in range(-2, rmax_idx - len(h) -1, -1):
+    if h[j] >= h[tempidx]:
+        area += (Loc(raw, tempidx) - Loc(raw, j)) * h[tempidx]
+        tempidx = j
+
+print(area)
+
+# print(h)
+# print(raw)
+
+# 인덱스를 고려해야 하는 경우가 많아서 모든 케이스를 집어내기 힘들었다
+# ==> 시점, 종점, 최대 값을 가지는 점.
+
+# N = int(input())
+# raw = []
+# area = 0
+# for i in range(N):
+#     temp = tuple(map(int, input().split()))
+#     raw.append(temp)
+# raw.sort(key=lambda x: x[0])
+
+# maxidx = raw.index(max(raw, key=lambda x: x[1]))
+
+# lmaxidx = maxidx
+# while lmaxidx >= 0:
+    
+
+
+# # print(maxidx)
+# # print(raw)

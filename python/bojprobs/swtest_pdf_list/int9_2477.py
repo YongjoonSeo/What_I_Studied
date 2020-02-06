@@ -29,11 +29,27 @@
 # area = (l[l_idx] * (l[l_1st] + l[l_3rd])) - (l[l_2nd] * l[l_3rd])
 # print(area * K)
 
-ㄱ자모양 90 180 270도 회전
-한 모퉁이에서 출발 (꼭짓점에서 출발)!!!!
-반시계방향
+def Idxplus(idx):
+    return (idx + 1) % 6
 
-입력
-변의 방향과 길이 동 1 서 2 남 3 북 4
+K = int(input())
+direc = []
+leng = []
+for i in range(6):
+    d, l = map(int, input().split())
+    direc.append(d)
+    leng.append(l)
 
-전체 참외개수 = 면적 * 1평방미터 참외 개수
+longidx = []
+for i in range(6):
+    if direc.count(direc[i]) == 1:
+        longidx.append(i)
+
+idx = longidx[0]
+while direc.count(direc[idx]) == 1:
+    idx = Idxplus(idx)
+
+shortidx = [Idxplus(idx), Idxplus(Idxplus(idx))]
+
+area = leng[longidx[0]] * leng[longidx[1]] - leng[shortidx[0]] * leng[shortidx[1]]
+print(area*K)
