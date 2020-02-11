@@ -36,3 +36,4 @@
 
 - redo
 - python console
+- clone caret
