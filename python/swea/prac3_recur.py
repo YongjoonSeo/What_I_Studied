@@ -12,7 +12,7 @@ def DFS(n):
             DFS(i)
 
 V, E = 7, 8
-edges = [1, 2, 1, 3, 2, 5, 2, 4, 3, 5, 4, 6, 5, 6, 6, 7]
+edges = [1, 2, 1, 3, 2, 4, 2, 5, 4, 6, 5, 6, 6, 7, 3, 7]
 field = [[0 for i in range(V+1)] for j in range(V+1)]
 visited = [0 for i in range(V+1)]
 result = []
