@@ -36,10 +36,31 @@ def KMP(string, target):
             return f'matched, {cnt} times'
     return f'not matched, {cnt} times'
 
-string = 'abcdabcdabcdabcdabcdabcef'
-target1 = 'abcdabcef' # 본문에 있는 문자열
-target2 = 'abcdabcf' # 본문에 없는 문자열
-print(Infolst(target1))
-print(Infolst(target2))
-print(KMP(string, target1))
-print(KMP(string, target2))
+def ComparePattern(string, target):
+    cnt = 0
+    loc = 0
+    for i in range(len(string) - len(target)+1):
+        loc += 1
+        for j in range(len(target)):
+            cnt += 1
+            if string[i+j] != target[j]:
+                break
+        else:
+            print('matched', end=', ')
+            print(f'{cnt} times')
+            break
+    else:
+        print('not matched', end=', ')
+        print(f'{cnt} times')
+
+string1 = 'Contrary to popular belief, Lorem Ipsum is not simply random text.'
+target1 = 'random' 
+string2 = 'abcdabcdabcdabcdabcdabcef'
+target2 = 'abcdabcef'
+
+ComparePattern(string1, target1)
+print(KMP(string1, target1))
+print(f'infolst of target1: {Infolst(target1)}')
+ComparePattern(string2, target2)
+print(KMP(string2, target2))
+print(f'infolst of target2: {Infolst(target2)}')

@@ -9,16 +9,16 @@ def ComparePattern(string, target):
                 break
         else:
             print('matched')
-            print(cnt)
+            print(f'{cnt} times')
             break
     else:
         print('not matched')
-        print(cnt)
+        print(f'{cnt} times')
 
 
-string = 'a pattern matching algorithm'
-target1 = 'rithm' # 본문에 있는 문자열
-target2 = 'ritm' # 본문에 없는 문자열
+string = 'Contrary to popular belief, Lorem Ipsum is not simply random text.'
+target1 = 'random' # 본문에 있는 문자열
+target2 = 'randm' # 본문에 없는 문자열
 
 ComparePattern(string, target1)
 ComparePattern(string, target2)
