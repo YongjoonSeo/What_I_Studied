@@ -37,3 +37,5 @@
 - redo
 - python console
 - clone caret
+- add selection for next occurrence
+- move line down / up
