@@ -45,6 +45,41 @@
   - 이미 만든 데이터베이스가 있는 경우 삭제한 후 스키마를 다시 만들면 utf8이 정상적으로 반영된다.
 
   [출처: Nesoy Blog](https://nesoy.github.io/articles/2017-05/mysql-UTF8)
+  
+- 이모티콘 입력되지 않는 현상 수정
+
+  - 특수문자가 4byte 문자인 경우가 있다
+    - 캐릭터셋을 utf8mb4로 설정해야 한다. [출처: OKKY](https://okky.kr/article/309533)
+
+  1. `/etc/mysql/my.cnf` 파일 변경하기
+
+  2. 추가해줘야 할 내용
+
+     ```
+     [client]
+     default-character-set = utf8mb4
+     
+     [mysql]
+     default-character-set = utf8mb4
+     
+     
+     [mysqld]
+     skip-character-set-client-handshake
+     init_connect="SET collation_connection = utf8mb4_unicode_ci"
+     init-connect='SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci'
+     
+     character-set-server = utf8mb4
+     collation-server = utf8mb4_unicode_ci
+     ```
+
+     - skip-character-set-client-handshake : 클라이언트의 인코딩 설정을 무시하고 데이터베이스의 인코딩을 사용한다는 의미.
+     - init_connect: 데이터베이스에 connect할 경우 실행되는 스크립트.
+
+     [출처: 안녕세계 티스토리 블로그](https://inma.tistory.com/100)
+
+- Expression #1 of ORDER BY clause is not in SELECT list 와 같은 에러가 뜬다면
+
+  - `my.cnf` 파일의 `[mysqld] `부분에 `sql_mode=''`를 추가해준다.
 
 
 
@@ -247,3 +282,26 @@ sudo nginx -s reload (reload configuration)
 
 - nginx 명령어
   - `systemctl status nginx` : nginx가 active 상태인지 확인할 수 있다.
+
+
+
+- 참고: 413 에러 나는 경우 (413 Payload Too Large)
+
+  - nginx.conf에서 파일 업로드 설정을 바꿔준다. - http 부분에 내용을 넣는다.
+
+    ```nginx
+    @ nginx.conf
+    
+    http {
+        # Set client upload size - 100Mbyte;
+        client_max_body_size 100M;
+        ...
+        ..
+        ..
+    }
+    ```
+
+    설정을 마치고 나면 reload한다.
+
+    [출처: webisfree.com](https://webisfree.com/2018-03-29/nginx-413-request-entity-too-large-%EC%97%90%EB%9F%AC-%ED%95%B4%EA%B2%B0%ED%95%98%EA%B8%B0-%ED%8C%8C%EC%9D%BC-%EC%97%85%EB%A1%9C%EB%93%9C-%EC%82%AC%EC%9D%B4%EC%A6%88)
+
