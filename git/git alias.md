@@ -36,3 +36,40 @@
 
 
 [출처 : 기계인간 블로그](https://johngrib.github.io/wiki/git-alias/)
+
+
+
+- 나의 alias 세팅
+
+```git
+		alias-basic = "!#--------------------------------------------------------------------------\n\
+                git alias | head -4"
+        s = status -s
+        co = checkout
+        br = branch
+        ad = add
+        ci = commit
+        pl = pull
+        ps = push
+        re = restore
+
+        alias-log = "!#--------------------------------------------------------------------------\n\
+                git alias | egrep 'log|commit-'"
+        l = "log --color --graph --decorate \
+                --date=format:'%Y-%m-%d' \
+                --abbrev-commit \
+                --pretty=format:'%C(red)%h%C(auto)%d %s %C(green)(%cr)%C(bold blue) %an'"
+                
+        alias-remote = "!#--------------------------------------------------------------------------\n\
+                git alias | grep remote"
+        rs = remote show
+        rup = remote update --prune
+
+        alias-alias = "!#--------------------------------------------------------------------------\n\
+                git alias | grep alias"
+        alias = "!# Prints all aliases.\n\
+                git config --list | egrep '^alias.+' | sed -e 's/^alias\\.//' | sed -e 's/^[^=]*=/\\'$'\\033[31m&\\033[(B\\033[m/' | column -t -s'=' | sed 's/!#* *//; s/;$//' | cut -c1-85"
+```
+
+
+
