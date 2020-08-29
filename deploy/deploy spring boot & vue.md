@@ -198,7 +198,7 @@ jdk 설치 및 설정 완료한 후
    
    
            location / {
-                   root /home/ubuntu/yj/s03p12a108/frontend/dist;
+                   root /home/ubuntu/release/frontend/dist; # 빌드한 폴더(dist) 경로를 적어준다
                    index index.html;
                    try_files $uri $uri/ /index.html;
            }
@@ -228,7 +228,7 @@ jdk 설치 및 설정 완료한 후
    
    
            location / {
-                   root /home/ubuntu/release/s03p13a108/frontend/dist;
+                   root /home/ubuntu/release/frontend/dist;
                    index index.html;
                    try_files $uri $uri/ /index.html;
            }
