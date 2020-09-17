@@ -1,4 +1,4 @@
-## Pandas
+## Pandas 시작하기
 
 ### 1. Pandas 개요
 
@@ -6,12 +6,12 @@
   - 관계형 데이터를 다루기 위한 파이썬 패키지
   - NumPy를 기반으로 만들어짐
 - Pandas의 자료구조
-  - Series
+  - **Series**
     - *class* pandas.Series(*data=None*, *index=None*, *dtype=None*, *name=None*, *copy=False*, *fastpath=False*) [reference](https://pandas.pydata.org/docs/reference/api/pandas.Series.html#pandas.Series) [source](https://github.com/pandas-dev/pandas/blob/v1.1.1/pandas/core/series.py#L139-L4979) 
     - 축 라벨을 포함한 1차원 ndarray
     - 축 라벨은 **index**라고 불린다.
     - 어떤 자료형이든 담을 수 있다.
-  - DataFrame
+  - **DataFrame**
     - *class* pandas.DataFrame(*data=None*, *index=None*, *columns=None*, *dtype=None*, *copy=False*) [reference](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.html?highlight=dataframe#pandas.DataFrame) [source](https://github.com/pandas-dev/pandas/blob/v1.1.1/pandas/core/frame.py#L340-L9261)
     - 여러 자료형을 담을 수 있는 2차원의 표 데이터
     - Series를 담고있는 컨테이너로도 볼 수 있다.
