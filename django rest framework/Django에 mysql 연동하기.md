@@ -1,4 +1,4 @@
-## django에 mysql 연동하기
+## Django에 mysql 연동하기
 
 ### 1. mysql에서 데이터베이스 생성
 
@@ -45,6 +45,7 @@
 - `my_settings.py`라는 파일을 별도로 만들어 관리하자.
 
   - **반드시 `.gitignore`에 등록하자.**
+  - `secrets.json`과 같은 json파일을 만든 후 그곳에 저장해서 관리해도 된다.
 
   ```
   # .gitignore
