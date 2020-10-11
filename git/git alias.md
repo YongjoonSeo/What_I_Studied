@@ -42,13 +42,15 @@
 - 나의 alias 세팅
 
 ```git
+[alias]
 		alias-basic = "!#--------------------------------------------------------------------------\n\
                 git alias | head -4"
         s = status -s
         co = checkout
         br = branch
         ad = add
-        ci = commit
+		ci = commit
+		cia = commit --amend
         pl = pull
         ps = push
         re = restore
@@ -59,11 +61,21 @@
                 --date=format:'%Y-%m-%d' \
                 --abbrev-commit \
                 --pretty=format:'%C(red)%h%C(auto)%d %s %C(green)(%cr)%C(bold blue) %an'"
-                
+
         alias-remote = "!#--------------------------------------------------------------------------\n\
-                git alias | grep remote"
+      	          git alias | grep remote"
         rs = remote show
-        rup = remote update --prune
+		rup = remote update --prune
+
+		alias-stash = "!#--------------------------------------------------------------------------\n\
+				git alias | grep stash"
+		st = stash
+		stl = stash list --pretty=format:\"%C(red)%gd%C(reset) %C(green)(%cr) %C(reset)%s\"
+
+		alias-rebase = "!#--------------------------------------------------------------------------\n\
+				git alias | grep rebase"
+		rb = rebase
+		rb-c = rebase --continue
 
         alias-alias = "!#--------------------------------------------------------------------------\n\
                 git alias | grep alias"

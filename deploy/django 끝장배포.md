@@ -388,6 +388,11 @@ LOGGING = {
                   index index.html;
                   try_files $uri $uri/ /index.html;
           }
+      
+          location /media {
+              root /home/ubuntu/media; 
+          }    
+      
   
           location /api {
                   proxy_pass http://localhost:8800;
@@ -565,7 +570,8 @@ force push는 반영이 안되나..?
 cd backend
 docker stop backend-dev
 docker rm backend-dev backend_migration_1
-docker volume rm -f backend_web_dev
+docker volume rm -f backend_web_dev backend_migration_1
+docker rmi backend_web backend_migration
 docker-compose up -d --force-recreate --renew-anon-volumes
 ```
 
@@ -582,8 +588,9 @@ npm run generate
 
 ```
 docker stop backend-prod 
-docker rm backend-prod childrenzip-prod_migration_1 
-docker volume rm -f childrenzip-prod_web_prod 
+docker rm backend-prod childrenzip-prod_migration_1
+docker volume rm -f childrenzip-prod_web_prod childrenzip-prod_migration
+docker rmi childrenzip-prod_web childrenzip-prod_migration
 docker-compose up -d --force-recreate --renew-anon-volumes
 ```
 
@@ -683,3 +690,60 @@ sudo docker cp secrets-dev.json $CONTAINER_NAME:$WORKSPACE/secrets-dev.json
 
 3. nginx로 원하는 포트로 연결시킨다.
 
+
+
+
+
+#### 최종 docker-compose
+
+- dev
+
+  ```yml
+  version: '3'
+      
+  services:
+      db:
+          image: mysql:5.7
+          volumes:
+              - db_data:/var/lib/mysql
+          environment:
+              MYSQL_ROOT_PASSWORD: ssafy
+              MYSQL_DATABASE: childrenzip-dev
+          command: 
+              - --character-set-server=utf8mb4
+              - --collation-server=utf8mb4_general_ci
+          ports:
+              - "7000:3306"
+      web:
+          build: .
+          container_name: backend-dev
+          command: python manage.py runserver 0.0.0.0:8000 --settings=spc_pjt.settings.development --noreload
+          volumes:
+              - web_dev:/code
+              - dev_log:/django-dev-log
+              - media_dev:/code/media
+          ports:
+              - "8000:8000"
+          depends_on:
+              - migration
+      migration:
+          build: .
+          command: python manage.py migrate --settings=spc_pjt.settings.development
+          volumes:
+              - web_dev:/code
+              - dev_log:/django-dev-log
+          links:
+              - db
+          depends_on:
+              - db
+  
+  volumes:
+      db_data:
+      web_dev:
+      dev_log:
+      media_dev:
+  ```
+
+  
+
+  
