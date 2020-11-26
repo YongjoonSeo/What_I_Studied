@@ -390,9 +390,13 @@ LOGGING = {
           }
       
           location /media {
-              root /home/ubuntu/media; 
+              	alias /home/ubuntu/media; 
           }    
       
+  	    location ^~ /.well-known/acme-challenge/ {
+  				default_type "text/plain";
+  				root     /usr/share/nginx/html;
+  		}    # for https
   
           location /api {
                   proxy_pass http://localhost:8800;
@@ -433,6 +437,85 @@ LOGGING = {
 
 - 다음번에 nginx docker-compose
   - docker-compose volume의 뒷쪽을 바꿔서 한번 파일이 가는지 확인부터 해보도록.
+
+
+
+- https 적용한 configure.
+
+  ```nginx
+  server {
+  
+          listen  443;
+          listen [::]:443;
+          server_name childrenzip.site;
+      
+      
+      	ssl on; 
+      	ssl_certificate /etc/letsencrypt/live/childrenzip.site/fullchain.pem; 
+      	ssl_certificate_key /etc/letsencrypt/live/childrenzip.site/privkey.pem; 
+      	ssl_session_timeout 5m; 
+  	    # ssl_protocols SSLv2 SSLv3 TLSv1;
+      	ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
+      	# ssl_ciphers HIGH:!aNULL:!MD5;
+      	ssl_ciphers 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH';
+      	ssl_prefer_server_ciphers on;
+  
+  
+  
+          location / {
+                  root /home/ubuntu/dist; 
+                  index index.html;
+                  try_files $uri $uri/ /index.html;
+          }
+      
+          location /media {
+              	alias /home/ubuntu/media; 
+          }    
+      
+  	    location ~ /\.ht {
+  	        	deny  all;
+      	}
+      
+      	location /api {
+                  proxy_pass http://localhost:8000;
+                  proxy_redirect off;
+                  charset utf-8;
+                  proxy_set_header X-Real_IP $remote_addr;
+                  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                  proxy_set_header X-Forwarded-Proto $scheme;
+                  proxy_set_header X-NginX-Proxy true;
+          }
+  }
+  
+  server {
+          listen  80;
+          listen [::]:80;
+          server_name childrenzip.site;
+      
+          location / {
+                  return 301 https://childrenzip.site$request_uri;
+          }
+      
+  	    location ^~ /.well-known/acme-challenge/ {
+  				default_type "text/plain";
+  				root     /usr/share/nginx/html;
+  		}    # for https
+      
+  }
+  
+  server {
+          listen 80;
+          listen [::]:80;
+          server_name www.childrenzip.site;
+  
+          location / {
+                  return 301 https://childrenzip.site$request_uri;
+          }
+  }
+  ```
+
+  
+  
 
 
 
@@ -496,13 +579,13 @@ secret 파일도 넣어서 구동하려고 하면
      - c/c++컴파일러를 못찾아서 에러 날 수 있다. - `apt-get install g++ build-essential` 추가
        https://stackoverflow.com/questions/57156171/problem-running-npm-install-in-jenkins-pipeline
 
-     ```
+```
      apt-get install g++ build-essential
      cd frontend
      npm install
      npm run build
      npm run generate
-     ```
+```
 
 
 
@@ -717,13 +800,13 @@ sudo docker cp secrets-dev.json $CONTAINER_NAME:$WORKSPACE/secrets-dev.json
       web:
           build: .
           container_name: backend-dev
-          command: python manage.py runserver 0.0.0.0:8000 --settings=spc_pjt.settings.development --noreload
+          command: python manage.py runserver 0.0.0.0:8800 --settings=spc_pjt.settings.development --noreload
           volumes:
               - web_dev:/code
               - dev_log:/django-dev-log
               - media_dev:/code/media
           ports:
-              - "8000:8000"
+              - "8800:8800"
           depends_on:
               - migration
       migration:
@@ -746,4 +829,53 @@ sudo docker cp secrets-dev.json $CONTAINER_NAME:$WORKSPACE/secrets-dev.json
 
   
 
+- prod
+
+  ```yml
+  version: '3'
+      
+  services:
+      db:
+          image: mysql:5.7
+          volumes:
+              - db_data:/var/lib/mysql
+          environment:
+              MYSQL_ROOT_PASSWORD: ssafy
+              MYSQL_DATABASE: childrenzip-prod
+          command: 
+              - --character-set-server=utf8mb4
+              - --collation-server=utf8mb4_general_ci
+          ports:
+              - "8500:3306"
+      web:
+          build: ./backend
+          container_name: backend-prod
+          command: gunicorn --env DJANGO_SETTINGS_MODULE=spc_pjt.settings.production --bind 0.0.0.0:8000 spc_pjt.wsgi:application
+          volumes:
+              - web_prod:/code
+              - prod_log:/django-prod-log
+              - media_prod:/code/media
+          ports:
+              - "8000:8000"
+          depends_on:
+              - migration
+      migration:
+          build: ./backend
+          command: python manage.py migrate --settings=spc_pjt.settings.production
+          volumes:
+              - web_prod:/code
+              - prod_log:/django-prod-log
+          links:
+              - db
+          depends_on:
+              - db
   
+  volumes:
+      db_data:
+      web_prod:
+      prod_log:
+      media_prod:
+  ```
+
+  
+
